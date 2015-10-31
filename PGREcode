@@ -1,0 +1,153 @@
+#!/usr/bin/perl 
+
+use warnings;
+
+use strict;
+
+use v5.10;
+
+my @loci;
+
+my @elements;
+
+my @chars;
+
+my $char;
+
+my $size = $ARGV[2];
+
+my @first;
+
+my @real;
+
+my $output = $ARGV[3];
+
+my $from;
+
+my $to;
+
+my $dummy;
+
+my $resultstring;
+
+my $contname;
+
+my $rmatch;
+
+say "  _____  ______ _____  _         _____   _____    ______   
+
+ |  __ \|  ____|  __ \| |       / ____| |  __ \  |  ____|  
+
+ | |__) | |__  | |__) | |      | |  __  | |__) | | |__     
+
+ |  ___/|  __| |  _  /| |      | | |_ | |  _  /  |  __|    
+
+ | |    | |____| | \ \| |____  | |__| |_| | \ \ _| |____ _ 
+
+ |_|    |______|_|  \_\______|  \_____(_)_|  \_(_)______(_)\n\n";
+
+#..............FILE IMPORTS.............................
+
+open my $fh1, '<', $ARGV[1] or die $!; # open the loci file, comma 
+
+separated
+
+while(<$fh1>) {
+
+    
+
+@loci = split(",");
+
+}
+
+close $fh1;
+
+open my $fh, '<', $ARGV[0] or die $!; # open the fasta file
+
+if (substr($ARGV[0],-5) eq  "fasta"){ 
+
+$dummy = <$fh>; 
+
+if ($dummy =~ m/(LD......)/){ 
+
+}else{ 
+
+$contname=$1; 
+
+say "Analysis in progress, please wait.."; 
+
+say "Invalid identificator, please check fasta header.\n"; 
+
+}
+
+}else{ 
+
+die "Use proper ending. (fasta)"; 
+
+close $fh;
+
+}
+
+while(<$fh>) {
+
+    
+
+    @chars = split //;   
+
+    for $char(@chars) { 
+
+push (@elements,$char); 
+
+ }
+
+}
+
+close $fh;
+
+open(my $outhandle, '>', $output) or die "Could not open file '$output' 
+
+$!";
+
+#...................MAPPING............................................
+
+for (@loci){ 
+
+$from= $_-$size; 
+
+$to= $_+$size; 
+
+print $outhandle  "\n>$contname with extracted-region: $from to $to 
+
+SNP:$_\n"; 
+
+say "Currently extracting region: $from - $to, SNP:$_ "; 
+
+for my $i (-$size .. $size){
+
+push(@first, $elements[$_+$i]); 
+
+} 
+
+foreach(@first){ 
+
+    if( ( defined $_) and !($_ =~ /^$/ )){ 
+
+        push(@real, $_); 
+
+    } 
+
+} 
+
+$resultstring = join('', @real); 
+
+print  $outhandle $resultstring;
+
+undef @first; 
+
+undef @real;
+
+}
+
+say "Output is in the: $output";
+
+close $outhandle;
