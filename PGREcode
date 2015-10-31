@@ -1,5 +1,8 @@
 #!/usr/bin/perl 
 
+#This is a simple tool, written to help extract regions from a genome. It is
+#command line based, you use it in this manner:
+# perl pgre.pl ingenome.fasta loci.csv sizeOfRegion output.fasta
 use warnings;
 
 use strict;
