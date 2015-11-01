@@ -3,6 +3,11 @@
 #This is a simple tool, written to help extract regions from a genome. It is
 #command line based, you use it in this manner:
 # perl pgre.pl ingenome.fasta loci.csv sizeOfRegion output.fasta
+# This algorithm is attributed to creative commons licencs. One can reuse, recreate, optimize it
+#Only with citation of author.
+#by. Blaz Skrlj
+
+
 use warnings;
 
 use strict;
